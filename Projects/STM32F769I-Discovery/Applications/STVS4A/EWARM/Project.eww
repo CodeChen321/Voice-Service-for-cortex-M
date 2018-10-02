@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workspace>
+    <project>
+        <path>$WS_DIR$\Project.ewp</path>
+    </project>
+    <batchBuild>
+        <batchDefinition>
+            <name>BuildAll</name>
+            <member>
+                <project>Project</project>
+                <configuration>STVS4A_BSP_LWIP</configuration>
+            </member>
+            <member>
+                <project>Project</project>
+                <configuration>STVS4A_BSP_LWIP_TRACEANALYSER</configuration>
+            </member>
+            <member>
+                <project>Project</project>
+                <configuration>STVS4A_AFE_LWIP</configuration>
+            </member>
+            <member>
+                <project>Project</project>
+                <configuration>STVS4A_BSP_LWIP_DELIVERY</configuration>
+            </member>
+            <member>
+                <project>Project</project>
+                <configuration>STVS4A_BSP_LWIP_ESP</configuration>
+            </member>
+            <member>
+                <project>Project</project>
+                <configuration>STVS4A_AFE_LWIP_DELIVERY</configuration>
+            </member>
+            <member>
+                <project>Project</project>
+                <configuration>STVS4A_BSP_LWIP_ESP_DELIVERY</configuration>
+            </member>
+        </batchDefinition>
+    </batchBuild>
+</workspace>
