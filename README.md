@@ -1,12 +1,20 @@
 VideoLinks
 1. Why we have this opensource
+
 http://v.youku.com/v_show/id_XMzg5MDA0NDk5Ng==.html?spm=a2h3j.8428770.3416059.1
+
 2. How to connect to amazon cloud
+
 http://v.youku.com/v_show/id_XMzg5MDA1MTEzNg==.html?spm=a2h3j.8428770.3416059.1
+
 3. Using cloud ASR and various servious
+
 http://v.youku.com/v_show/id_XMzg5MDA2MTA5Mg==.html?spm=a2h3j.8428770.3416059.1
+
 4. How to download open source to DEV Board
+
 http://v.youku.com/v_show/id_XMzg5MDMwMzIwMA==.html?spm=a2h3j.8428770.3416059.1
+
 
 
 Why We Need This?
