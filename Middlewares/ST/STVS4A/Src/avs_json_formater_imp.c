@@ -299,6 +299,7 @@ const char_t *avs_json_formater_recognizer_event(AVS_instance_handle *pHandle, c
     }
     else
     {
+    //shichaog this may mean, Alexa shuold be called
       AVS_VERIFY(json_object_set_new(initiator, "type", json_string("WAKEWORD")) == 0);
     }
   }

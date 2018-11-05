@@ -1147,6 +1147,8 @@ uint8_t BSP_AUDIO_IN_InitEx(uint16_t InputDevice, uint32_t AudioFreq, uint32_t B
     AudioIn_ChannelNumber = ChnlNbr;
     /* PLL clock is set depending by the AudioFreq (44.1khz vs 48khz groups) */ 
     BSP_AUDIO_IN_ClockConfig(&hAudioInTopLeftFilter, AudioFreq, NULL);
+    //shichaog
+    //BSP_AUDIO_IN_ClockConfig(&hAudioInTopRightFilter, AudioFreq, NULL);
     
     /* Init the SAI MSP: this __weak function can be redefined by the application*/
     BSP_AUDIO_IN_MspInit();
@@ -1226,7 +1228,7 @@ uint8_t BSP_AUDIO_IN_GetChannelNumber(void)
 }
 
 /**
-  * @brief  Start audio recording.
+  * @brief  Start audio recording. shichaog set pbuf of userspace
   * @param  pbuf: Main buffer pointer for the recorded data storing  
   * @param  size: Current size of the recorded buffer
   * @retval AUDIO_OK if correct communication, else wrong communication
@@ -1256,6 +1258,7 @@ uint8_t BSP_AUDIO_IN_Record(uint16_t* pbuf, uint32_t size)
       }
     }
 
+     //shichaog how large DMA transport
     /* Call the Media layer start function for top right channel */
     if(HAL_OK != HAL_DFSDM_FilterRegularStart_DMA(&hAudioInTopRightFilter, pScratchBuff[0], ScratchSize))
     {
@@ -1431,7 +1434,7 @@ void BSP_AUDIO_IN_DeInit(void)
   }
 }
 
-/**
+/** shichaog shichaog
   * @brief  Regular conversion complete callback. 
   * @note   In interrupt mode, user has to read conversion value in this function
             using HAL_DFSDM_FilterGetRegularValue.
@@ -1495,7 +1498,7 @@ void HAL_DFSDM_FilterRegConvCpltCallback(DFSDM_Filter_HandleTypeDef *hdfsdm_filt
   /* Call Half Transfer Complete callback */
   if((AppBuffTrigger == hAudioIn.RecSize/2) && (AppBuffHalf == 0))
   {
-    AppBuffHalf = 1;  
+    AppBuffHalf = 1;  //shichaog
     BSP_AUDIO_IN_HalfTransfer_CallBack();
   }
   /* Call Transfer Complete callback */
@@ -1503,7 +1506,7 @@ void HAL_DFSDM_FilterRegConvCpltCallback(DFSDM_Filter_HandleTypeDef *hdfsdm_filt
   {
     /* Reset Application Buffer Trigger */
     AppBuffTrigger = 0;
-    AppBuffHalf = 0; 
+    AppBuffHalf = 0;  //shichaog
     /* Call the record update function to get the next buffer to fill and its size (size is ignored) */
     BSP_AUDIO_IN_TransferComplete_CallBack();
   }  
@@ -1568,7 +1571,7 @@ void HAL_DFSDM_FilterRegConvHalfCpltCallback(DFSDM_Filter_HandleTypeDef *hdfsdm_
     }
   }
   
-  /* Call Half Transfer Complete callback */
+  /* Call Half Transfer Complete callback shichaog copy data to userspace*/
   if((AppBuffTrigger == hAudioIn.RecSize/2) && (AppBuffHalf == 0))
   { 
     AppBuffHalf = 1;  
@@ -2117,8 +2120,8 @@ static void DFSDMx_FilterMspInit(void)
   /* Reset DMA handle state */
   __HAL_DMA_RESET_HANDLE_STATE(&hDmaTopRight);
   
-  /* Configure the DMA Channel */
-  HAL_DMA_Init(&hDmaTopRight);      
+  /* shichaog Configure the DMA Channel */
+  HAL_DMA_Init(&hDmaTopRight);   
   
   /* DMA IRQ Channel configuration */
   HAL_NVIC_SetPriority(AUDIO_DFSDMx_DMAx_TOP_RIGHT_IRQ, AUDIO_OUT_IRQ_PREPRIO, 0);

@@ -75,7 +75,9 @@ static   AVS_Result platform_init(AVS_instance_handle *pHandle)
   snprintf(tCpuID, sizeof(tCpuID), "STM32F769I cut %lu.%lu", rev + 1, var); /* Revision field start to 0 but knwon as version 1, so +1 :) */
   pHandle->pFactory->cpuID = tCpuID;
   avs_init_default_interger(&pHandle->pFactory->profile, AVS_PROFILE_NEAR_FIELD);
-  avs_init_default_interger(&pHandle->pFactory->initiator, AVS_INITIATOR_TAP_TO_TALK);
+  //shichaog change to KWS 
+  //avs_init_default_interger(&pHandle->pFactory->initiator, AVS_INITIATOR_TAP_TO_TALK);
+  avs_init_default_interger(&pHandle->pFactory->initiator, AVS_INITIATOR_VOICE_INITIATED);
   return AVS_OK;
 }
 

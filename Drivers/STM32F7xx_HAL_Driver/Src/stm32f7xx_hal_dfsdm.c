@@ -1549,7 +1549,7 @@ HAL_StatusTypeDef HAL_DFSDM_FilterRegularStart_DMA(DFSDM_Filter_HandleTypeDef *h
   else if((hdfsdm_filter->State == HAL_DFSDM_FILTER_STATE_READY) || \
           (hdfsdm_filter->State == HAL_DFSDM_FILTER_STATE_INJ))
   {
-    /* Set callbacks on DMA handler */
+    /* Set callbacks on DMA handler  shichaog*/
     hdfsdm_filter->hdmaReg->XferCpltCallback = DFSDM_DMARegularConvCplt;
     hdfsdm_filter->hdmaReg->XferErrorCallback = DFSDM_DMAError;
     hdfsdm_filter->hdmaReg->XferHalfCpltCallback = (hdfsdm_filter->hdmaReg->Init.Mode == DMA_CIRCULAR) ?\

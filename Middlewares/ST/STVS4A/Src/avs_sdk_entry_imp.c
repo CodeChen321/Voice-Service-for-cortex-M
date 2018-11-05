@@ -431,6 +431,14 @@ AVS_Handle AVS_Create_Instance(AVS_Instance_Factory *pFactory)
     vPortFree(pHandle);
     return AVS_ERROR;
   }
+
+  result  = avs_kws_task_create(pHandle);
+  AVS_ASSERT((result == AVS_OK));
+  if(result != AVS_OK)
+  {
+    vPortFree(pHandle);
+    return AVS_ERROR;
+  }
   pHandle->bInstanceStarted = 1;
   return (AVS_Handle)pHandle;
 }

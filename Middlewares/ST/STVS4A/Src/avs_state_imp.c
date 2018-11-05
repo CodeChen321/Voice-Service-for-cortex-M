@@ -73,7 +73,8 @@ typedef enum mode_state
 
 
 */
-
+//shichaog According to AVS AVS_STATE_START_CAPTURE and end to start a session
+//shichaog the state shuold be set by KWS module
 AVS_Result avs_set_state(AVS_instance_handle *pHandle, AVS_Instance_State state)
 {
   /* Check of we are connected */
@@ -276,7 +277,7 @@ static AVS_Result avs_state_audio_push(AVS_instance_handle *pHandle)
   {
     blkSize = sizeStreamSpeaker;
   }
-  /* Capture microphone buffer */
+  /* Capture microphone buffer shichaog out ---> push audio to newtwork */
   ret = avs_avs_capture_audio_stream_buffer(pHandle->pAudio, pHandle->pBufferStreamBuff, blkSize);
   if(ret == 0)
   {
@@ -342,7 +343,7 @@ static void avs_state_dialogue_terminator_set(AVS_instance_handle *pHandle, uint
 
  The task manages the dialogue state  and sequences the rec phase and play
 
-
+ shichaog This is the core state task !
 */
 static void avs_state_task(const void *pCookie);
 static void avs_state_task(const void *pCookie)
@@ -383,6 +384,8 @@ static void avs_state_task(const void *pCookie)
     switch(avs_core_atomic_read(&pHandle->modeState))
     {
 
+//shichaog since this state definitely called by power on start
+//shichaog platform_Audio_ioctl in MODE_START_HTTP2 will be called. There is no need set in service wakeup.c
       case MODE_STOP_HTTP2:
       {
         /* Stop all connections */
@@ -419,8 +422,11 @@ static void avs_state_task(const void *pCookie)
         /* Make sure the input is muted */
         avs_audio_capture_mute(pHandle->pAudio, TRUE);
 
-        /* Make sure we are in reset wakeup mode */
+        /* Make sure we are in reset wakeup mode shichaog start KWS */
         drv_audio.platform_Audio_ioctl(pHandle->pAudio, AVS_IOCTL_CAPTURE_FEED, AVS_CAPTURE_WAKEUP, 0);
+		//shichaog we should judge return value for KWS???? or we just in ioctl function call AVS_Send_Evt if KWSed??? 
+		
+		
 
         /* Initiate the HTTP2 connection */
         result  = avs_http2_connnection_manager_create(pHandle);
@@ -516,6 +522,7 @@ static void avs_state_task(const void *pCookie)
           /* Signal the state */
           avs_core_message_send(pHandle, EVT_START_REC, 0);
           /* Change the feed mode to map the mic to alexa */
+		  //shichaog here shuold be AVS_CAPTURE_AVS ? since we already truely KWS
           drv_audio.platform_Audio_ioctl(pHandle->pAudio, AVS_IOCTL_CAPTURE_FEED, AVS_CAPTURE_AVS, 0);
         }
 
@@ -544,7 +551,7 @@ static void avs_state_task(const void *pCookie)
         uint32_t newstate = MODE_PARSE_REPONSE;
         /* Signal the state */
         avs_core_message_send(pHandle, EVT_CHANGE_STATE, AVS_STATE_STOP_CAPTURE);
-        /* Re-map the microphone to Wake word detection */
+        /* Re-map the microphone to Wake word detection start KWS again*/
         drv_audio.platform_Audio_ioctl(pHandle->pAudio, AVS_IOCTL_CAPTURE_FEED, AVS_CAPTURE_WAKEUP, 0);
         /* Mute the microphone */
         avs_audio_capture_reset(pHandle->pAudio); /* clear the buffer  for reco buff state display */
@@ -700,7 +707,7 @@ static void avs_state_task(const void *pCookie)
 
       case MODE_PREPARE_IDLE:
       {
-        /* Just send some notification */
+        /* Just send some notification  shichaog here we call KWS */
         drv_audio.platform_Audio_ioctl(pHandle->pAudio, AVS_IOCTL_CAPTURE_FEED, AVS_CAPTURE_WAKEUP, 0);
         /* Signal state */
         avs_core_message_send(pHandle, EVT_CHANGE_STATE, AVS_STATE_IDLE);

@@ -68,7 +68,8 @@
 #include "avs_private.h"
 #include "avs_porting_bsp_F7.h"
 
-#define   AUDIO_IN_SIZE           (512)       /* (must be splited by 2 for half buffer)  real buffer size is AUDIO_SIZE_DMA_SIZE*AUDIO_SIZE_DMA_SIZE_ELEMENT TODO: check this size */
+//shichaog 2 channel * 40ms * 16 point ?????
+#define   AUDIO_IN_SIZE           (2*40*16)       /* (must be splited by 2 for half buffer)  real buffer size is AUDIO_SIZE_DMA_SIZE*AUDIO_SIZE_DMA_SIZE_ELEMENT TODO: check this size */
 #define   AUDIO_OUT_SIZE          (4*1024)    /* (must be splited  by 2 for half buffer) */
 
 
@@ -86,7 +87,7 @@
 
 
 
-
+//shichaog
 #define SCRATCH_BUFF_SIZE  1024
 static    int32_t          audioInScratchBuffer[SCRATCH_BUFF_SIZE];         /* Bsp scratch buffer */
 static    AVS_audio_handle *gHandle;                          /* Mono instance global handle */
@@ -133,6 +134,8 @@ static  void process_out_part(uint32_t part)
 
 }
 
+//shichaog  gAvs_Input_Feed_CB can be used to do speech signal processing!
+//shichaog process_out_part  can be used to signal AEC should be called! 
 static  void process_part(uint32_t part);
 static  void process_part(uint32_t part)
 {
@@ -195,8 +198,8 @@ static  void process_part(uint32_t part)
 }
 
 
-
-
+//shichaog Here can used to call back KWS, and KWS also call gAvs_Input_Feed_CB to process input and if necessary to 
+//set KWS avs state. All algorith shuold be added here.
 uint32_t   platform_Audio_ioctl(AVS_audio_handle *pHandle, uint32_t code, uint32_t wparam, uint32_t lparam)
 {
 
@@ -227,8 +230,6 @@ uint32_t   platform_Audio_ioctl(AVS_audio_handle *pHandle, uint32_t code, uint32
       return AVS_OK;
     }
   }
-
-
 
   if( code == AVS_IOCTL_INJECT_MICROPHONE)
   {
@@ -266,8 +267,6 @@ uint32_t   platform_Audio_ioctl(AVS_audio_handle *pHandle, uint32_t code, uint32
     }
 
     return AVS_OK;
-
-
   }
 
   if(code == AVS_IOCTL_AUDIO_VOLUME)
@@ -315,11 +314,21 @@ uint32_t   platform_Audio_ioctl(AVS_audio_handle *pHandle, uint32_t code, uint32
     }
     return gHandle->volumeOut;
   }
+
+  if(code == AVS_IOCTL_AUDIO_FEED_CALLBACK) {
+    if(wparam == AVS_CAPTURE_AVS) {
+      pHandle->kwsStatus = 0x00;
+    }
+    if(wparam == AVS_CAPTURE_WAKEUP) {
+      pHandle->kwsStatus = 0x01;
+    }
+  }
+
   return AVS_NOT_IMPL;
 }
 
 
-
+//shichaog topright && topleft mic are chosen
 AVS_Result init_bsp_audio(AVS_audio_handle *pHandle);
 AVS_Result init_bsp_audio(AVS_audio_handle *pHandle)
 {
@@ -405,6 +414,7 @@ AVS_Result term_bsp_audio(AVS_audio_handle *pHandle)
 void AUDIO_DFSDMx_DMAx_TOP_LEFT_IRQHandler(void);
 void AUDIO_DFSDMx_DMAx_TOP_LEFT_IRQHandler(void)
 {
+//shichaog
   HAL_DMA_IRQHandler(hAudioInTopLeftFilter.hdmaReg);
 }
 
@@ -415,6 +425,7 @@ void AUDIO_DFSDMx_DMAx_TOP_LEFT_IRQHandler(void)
 void AUDIO_DFSDMx_DMAx_TOP_RIGHT_IRQHandler(void);
 void AUDIO_DFSDMx_DMAx_TOP_RIGHT_IRQHandler(void)
 {
+//shichaog
   HAL_DMA_IRQHandler(hAudioInTopRightFilter.hdmaReg);
 }
 
@@ -467,7 +478,7 @@ void BSP_AUDIO_OUT_TransferComplete_CallBack(void)
 
 
 
-
+//shichaog
 void BSP_AUDIO_IN_HalfTransfer_CallBack(void)
 {
   /* Signal ISR the half part to inject */

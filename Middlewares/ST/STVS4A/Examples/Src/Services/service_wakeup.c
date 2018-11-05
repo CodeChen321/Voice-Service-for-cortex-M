@@ -76,7 +76,8 @@ static task_t *        hBntTask;
 const void *              pSoundWav;
 extern uint32_t           bOutputDebugWave;   /* Debug purpose, enable the tone production on the speake if true */
 
-
+//shichaog According to Button state call AVS_STATE_START_CAPTURE && AVS_STATE_STOP_CAPTURE
+//This shuold be implemented according to KWS && VAD
 
 /* Check the button state and returns if the button is released or if it is a long push or short push */
 static uint32_t GetButtonState(void);
@@ -158,7 +159,7 @@ static void service_wakeup_task(const void *pCookie)
 
       }
     }
-    if (sInstanceFactory.initiator != AVS_INITIATOR_PUSH_TO_TALK )
+    if (sInstanceFactory.initiator == AVS_INITIATOR_TAP_TO_TALK )
     {
       /* The capture starts when the button is pushed */
       /* And will be stopped by a cloud directive */
@@ -206,6 +207,7 @@ AVS_Result service_wakeup_event_cb(AVS_Handle hInst, uint32_t pCookie, AVS_Event
         /* No wake up if not AVS_INITIATOR_VOICE_INITIATED */
         /* Start the capture */
         AVS_Play_Sound(hInstance, AVS_PLAYSOUND_PLAY, (void *)(uint32_t)pSoundWav, 100);
+		//shichaog This is for alarm, if alarm occured, start capture speech.
         AVS_Set_State(hInstance, AVS_STATE_START_CAPTURE);
 
       }

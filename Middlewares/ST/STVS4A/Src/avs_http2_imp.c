@@ -127,7 +127,7 @@ static void avs_http2_connnection_manager_close(AVS_instance_handle *pHandle)
 * @param[in]
 * @param[in]
 **/
-
+//shichaog here avs_http2_connnection_task set avs state to AVS_STATE_RESTART important
 static void avs_http2_connnection_task(const void * argument);
 static void avs_http2_connnection_task(const void * argument)
 {

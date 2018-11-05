@@ -977,7 +977,10 @@ static void avs_audio_speaker_injection_task(const void *pCookie)
           nbSamples = avs_audio_buffer_get_producer_size_available(&pAHandle->recognizerPipe.outBuffer);
           if(nbSamples   >= halfSize)
           {
+          //shichaog copy user-space data to AVS_output
             avs_audio_copy_producer(&pAHandle->recognizerPipe.outBuffer, pSrc, freqMic, channelMic, halfSize);
+		  //shichaog since data copy to recognizerPipe.outBuffer, process several frames...
+		  	avs_core_event_set(&pAHandle->newDataReceived);
             break;
           }
           else
@@ -1008,7 +1011,7 @@ The function return the size ready captured in the buffer
 The function clamps the size to the maximum available but never exceed the expected size
 
 */
-
+//shichaog copy data to network
 uint32_t avs_avs_capture_audio_stream_buffer(AVS_audio_handle *pAHandle, void *pDst, int32_t size )
 {
   uint32_t nbSamples = 0;
@@ -1020,6 +1023,8 @@ uint32_t avs_avs_capture_audio_stream_buffer(AVS_audio_handle *pAHandle, void *p
   }
   avs_core_mutex_lock(&pAHandle->recognizerPipe.lock);
   /* Payload must be aligned on the sample size */
+  //shichaog shoul be noticed that here use outBuffer
+  //shichaog that means we shuold copy inbuf to outbuffer
   nbSamples = avs_audio_buffer_consume(&pAHandle->recognizerPipe.outBuffer, nbSamples, pDst);
   avs_core_mutex_unlock(&pAHandle->recognizerPipe.lock);
   return nbSamples;
@@ -1240,6 +1245,8 @@ AVS_Result avs_audio_create(AVS_audio_handle *pHandle)
   {
     AVS_TRACE_ERROR("Create task %s", AUDIO_OUT_TASK_NAME);
     return AVS_ERROR;
+  }else {
+	AVS_VERIFY(avs_core_event_create(&pHandle->newDataReceived));
   }
   return AVS_OK;
 }
@@ -1258,13 +1265,16 @@ AVS_Result avs_audio_delete(AVS_audio_handle *pHandle)
 {
 
   pHandle->runInRuning =  0;
+
   avs_core_event_set(&pHandle->synthesizerPipe.inEvent); /* Make sure we are no locked in the loop */
   avs_core_event_wait(&pHandle->taskCreatedEvent, INFINITE_DELAY);    /* Wait the exit task */
+  
 
   pHandle->runOutRuning =  0;
   avs_core_event_set(&pHandle->synthesizerPipe.outEvent);           /* Make sure we are no locked in the loop */
   avs_core_event_wait(&pHandle->taskCreatedEvent, INFINITE_DELAY);   /* Wait the exit task */
   /* Delete object */
+  avs_core_event_delete(&pHandle->newDataReceived);
   avs_core_event_delete(&pHandle->taskCreatedEvent);
   return AVS_OK;
 }
