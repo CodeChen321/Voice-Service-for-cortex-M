@@ -27,7 +27,7 @@
 #include "../DNN/dnn.h"
    
 #include "wav_olivia_1.h"
-int16_t audio_buff[16000] = KWS_DATA;
+//int16_t audio_buff[16000] = KWS_DATA;
 
 int get_top_detection(q7_t* prediction)
 {
@@ -74,7 +74,7 @@ kws_inst *kws_init(void)
   handle->mfcc_inst = create_MFCC();
   handle->dnn_inst  = create_nn(handle->scratch_buffer);
   
-  memset(handle->audio_buffer, 0, 8000*sizeof(int16_t));
+  memset(handle->audio_buffer, 0, 640*2*sizeof(int16_t));
   memset(handle->mfcc_buffer, 0, MFCC_BUFFER_SIZE * sizeof(q7_t));
   handle->mfcc_buffer_head = 0;
   handle->read_pos  = 0;
@@ -90,8 +90,8 @@ int kws_process(kws_inst *handle)
   int detection_threshold = 0;
   q7_t output[OUT_DIM];
   q7_t averaged_output[OUT_DIM];
-  memcpy(handle->audio_buffer + handle->write_pos, audio_buff, 16000);
-  handle->write_pos = 16000;
+ // memcpy(handle->audio_buffer + handle->write_pos, audio_buff, 16000);
+ // handle->write_pos = 16000;
   
   
   num_frames = (handle->write_pos - handle->read_pos) / (FRAME_SHIFT);
@@ -107,11 +107,13 @@ int kws_process(kws_inst *handle)
     
     average_predictions(averaging_window_len, handle->predictions, output, averaged_output);
     max_ind = get_top_detection(averaged_output);
-    if(averaged_output[max_ind] > detection_threshold *128/100) {
-      printf("Detected %s (%d%%), (%d%%)\n", output_class[max_ind], ((int)averaged_output[max_ind]*100),
-             ((int)output[max_ind]*100/128));
-    }  
+    //if(averaged_output[max_ind] > detection_threshold *128/100) {
+    //  printf("Detected %s (%d%%), (%d%%)\n", output_class[max_ind], ((int)averaged_output[max_ind]*100),
+    //         ((int)output[max_ind]*100/128));
+    //}  
   }
+  handle->write_pos -= FRAME_SHIFT * num_frames;
+
   if(max_ind == 2)
       return 1;
   else 

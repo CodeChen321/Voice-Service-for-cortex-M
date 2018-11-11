@@ -33,5 +33,5 @@ Why We Need This?
     Two or four micphones are supported according to our schedual.
 
 
-    Who are interested in this open source project, we want you if you are familar with MCU or Speech algorithment development. you can contact me through shichaog@126.com. Thanks!
+    Anyone interested in this open source project, we want you if you are familar with MCU or Speech algorithment development. you can contact me through shichaog@126.com. Thanks!
 

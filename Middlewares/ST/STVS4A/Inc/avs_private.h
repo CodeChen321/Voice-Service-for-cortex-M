@@ -163,8 +163,8 @@ extern "C" {
 #define HTTP_CTX_TASK_PRIORITY           avs_core_task_priority_below_normal    /* Downstream and Connection sould have the same priority to prevent Priority inversion issue */
 #define HTTP_CTX_TASK_NAME               "AVS:Connnection"
 
-#define KWS_TASK_STACK_SIZE              (TASK_SIZE*2)
-#define KWS_TASK_PRIORITY                avs_core_task_priority_normal    /* Downstream and Connection sould have the same priority to prevent Priority inversion issue */
+#define KWS_TASK_STACK_SIZE              (TASK_SIZE)
+#define KWS_TASK_PRIORITY                avs_core_task_priority_below_normal    /* Downstream and Connection sould have the same priority to prevent Priority inversion issue */
 #define KWS_TASK_NAME                    "AVS:KWS"
 
 
@@ -834,9 +834,6 @@ typedef struct avs_instance_handle
   avs_mutex               hTokenLock;            /* Token lock */
   uint32_t                tokenRenewTimeStamp;   /* Time stamp the last token renew */
 
-  /* Kws */
-  uint32_t                hKwsState;
-  avs_task                *hKwsTask;
 } AVS_instance_handle;
 
 
@@ -855,12 +852,17 @@ typedef struct avs_audio_handle
   avs_event          taskCreatedEvent;          /* Signal the task is created and active */
   uint32_t           runOutRuning;              /* True if the audio out task in running */
   uint32_t           runInRuning;               /* True if the audio in task in running */
-  avs_event          newDataReceived;           /* Signal new data for kws ready*/
   void               *pMP3Context;              /* Ptr mp3 decoder context */
   uint32_t           volumeMuted;              /* TRUE if muted */
   int32_t            volumeOut;                /* Volume in percent */
   Avs_bytes_buffer   ringMp3Speaker;           /* MP3 Speaker channel */
   uint32_t           kwsStatus;                 /*Do KWS if 1, 0: no kws */
+  
+    /* Kws */
+  uint32_t           hKwsState;
+  uint32_t           runKwsRuning;               /* True if the kws task in running */
+  avs_event          newDataReceived;           /* Signal new data for kws ready*/
+  avs_task           *hKwsTask;
 
 } AVS_audio_handle;
 
@@ -1168,8 +1170,8 @@ const char_t *avs_token_wait_for_access(void);
 const char_t *avs_token_access_lock_and_get(AVS_instance_handle *pHandle);
 void        avs_token_access_unlock(AVS_instance_handle *pHandle);
 
-AVS_Result avs_kws_task_create(AVS_instance_handle *pHandle);
-AVS_Result avs_kws_task_delte(AVS_instance_handle *pHandle);
+AVS_Result avs_kws_task_create(AVS_audio_handle *pHandle);
+AVS_Result avs_kws_task_delete(AVS_audio_handle *pHandle);
 
 
 AVS_Result avs_token_authentication_grant_code_set(AVS_instance_handle *pHandle, const char_t *grantCode);

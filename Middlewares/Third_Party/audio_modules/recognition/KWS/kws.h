@@ -26,7 +26,7 @@
 #define MAX_SLIDING_WINDOW 10
    
 typedef struct _kws_inst {
-    int16_t audio_buffer[16000]; // should be large enough
+    int16_t audio_buffer[640*2]; // should be large enough
     q7_t scratch_buffer[SCRATCH_BUFFER_SIZE];
     MFCC_Inst *mfcc_inst;
     NN_Inst *dnn_inst;
@@ -44,4 +44,4 @@ int kws_process(kws_inst *handle);
 void kws_reset(kws_inst *handle);
 void kws_destory(kws_inst *handle);
 
-#endif
+#endif /*_kws_*/

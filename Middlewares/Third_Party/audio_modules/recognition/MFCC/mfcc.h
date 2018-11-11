@@ -63,4 +63,4 @@ float * create_dct_matrix(int32_t input_length, int32_t coefficient_count);
 void create_mel_fbank(MFCC_Inst *handle);
 
 void mfcc_compute(const int16_t * data, uint16_t dec_bits, int8_t * mfcc_out, MFCC_Inst *handle);
-#endif
+#endif /*_mfcc_*/

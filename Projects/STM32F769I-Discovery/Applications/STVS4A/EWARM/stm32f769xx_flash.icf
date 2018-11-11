@@ -38,8 +38,8 @@ define symbol __ICFEDIT_region_SDRAM_end__          	   = 0xC07FFFFF;
 
 
 /*-Sizes-*/
-define symbol __ICFEDIT_size_cstack__ = 0x6000;
-define symbol __ICFEDIT_size_heap__   = 0x100000;
+define symbol __ICFEDIT_size_cstack__ = 0xC000;
+define symbol __ICFEDIT_size_heap__   = 0x200000;
 /**** End of ICF editor section. ###ICF###*/
 
 define memory mem with size  = 4G;

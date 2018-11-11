@@ -420,7 +420,8 @@ static void avs_state_task(const void *pCookie)
         avs_core_atomic_write(&pHandle->curState, AVS_STATE_RESTART);
 
         /* Make sure the input is muted */
-        avs_audio_capture_mute(pHandle->pAudio, TRUE);
+        avs_audio_capture_reset(pHandle->pAudio);
+        avs_audio_capture_mute(pHandle->pAudio, FALSE);
 
         /* Make sure we are in reset wakeup mode shichaog start KWS */
         drv_audio.platform_Audio_ioctl(pHandle->pAudio, AVS_IOCTL_CAPTURE_FEED, AVS_CAPTURE_WAKEUP, 0);
@@ -495,8 +496,7 @@ static void avs_state_task(const void *pCookie)
         uint32_t newstate = MODE_REC_PUSH;
 
         /* Make sure we start with and empty pipe */
-        avs_audio_capture_reset(pHandle->pAudio);
-        avs_audio_capture_mute(pHandle->pAudio, FALSE);
+        //avs_audio_capture_mute(pHandle->pAudio, FALSE);
         /* First send a sync state */
         /* Send the Recognize json body */
         const char_t *pMessage = avs_json_formater_recognizer_event(pHandle, "Recognize");
@@ -554,8 +554,8 @@ static void avs_state_task(const void *pCookie)
         /* Re-map the microphone to Wake word detection start KWS again*/
         drv_audio.platform_Audio_ioctl(pHandle->pAudio, AVS_IOCTL_CAPTURE_FEED, AVS_CAPTURE_WAKEUP, 0);
         /* Mute the microphone */
-        avs_audio_capture_reset(pHandle->pAudio); /* clear the buffer  for reco buff state display */
-        avs_audio_capture_mute(pHandle->pAudio, TRUE);
+        //avs_audio_capture_reset(pHandle->pAudio); /* clear the buffer  for reco buff state display */
+        //avs_audio_capture_mute(pHandle->pAudio, TRUE);
         /* Stop the stream */
         if(avs_http2_stream_stop(pHandle, pHandle->hHttpDlgStream ) != AVS_OK)
         {

@@ -53,6 +53,9 @@ const q7_t ip4_bias[OUT_DIM]=IP4_BIAS;
 NN_Inst* create_nn(q7_t* scratch_pad)
 {
   NN_Inst *Inst = (NN_Inst *)malloc(sizeof(NN_Inst));
+  if(Inst == NULL){
+    printf("Malloc NN failed\n");
+  }
   Inst->ip1_out = scratch_pad;
   Inst->ip2_out = Inst->ip1_out+IP1_OUT_DIM;
   Inst->ip3_out = Inst->ip1_out;

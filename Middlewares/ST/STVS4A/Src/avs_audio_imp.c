@@ -641,6 +641,7 @@ static void avs_audio_voice_injection_task(const void *pCookie)
   uint32_t      halfSize;
   AVS_audio_handle *pAHandle = (AVS_audio_handle *)(uint32_t)pCookie;
   AVS_instance_handle *pIHandle = pAHandle->pInstance;
+
   /* Wait the instance is created */
   while(avs_core_atomic_read(&pIHandle->bInstanceStarted) == 0)
   {
@@ -979,8 +980,8 @@ static void avs_audio_speaker_injection_task(const void *pCookie)
           {
           //shichaog copy user-space data to AVS_output
             avs_audio_copy_producer(&pAHandle->recognizerPipe.outBuffer, pSrc, freqMic, channelMic, halfSize);
-		  //shichaog since data copy to recognizerPipe.outBuffer, process several frames...
-		  	avs_core_event_set(&pAHandle->newDataReceived);
+	    //shichaog since data copy to recognizerPipe.outBuffer, process several frames...
+            avs_core_event_set(&pAHandle->newDataReceived);
             break;
           }
           else

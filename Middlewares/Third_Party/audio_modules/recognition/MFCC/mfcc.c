@@ -40,13 +40,25 @@ MFCC_Inst * create_MFCC()
 {
 
   MFCC_Inst *Inst  = (MFCC_Inst*)malloc(sizeof(MFCC_Inst));
+  if(Inst == NULL) {
+    printf("Malloc MFCC instance Error\n");
+  }
   // Round-up to nearest power of 2.
   Inst->frame_len_padded = (int)pow(2,ceil((log(FRAME_LEN)/log(2))));
 
   Inst->frame = (float*)malloc(Inst->frame_len_padded * sizeof(float));
+  if(Inst->frame_len_padded == NULL) {
+    printf("MFCC Inst->frame \n");
+  }
 
   Inst->buffer = (float*)malloc(Inst->frame_len_padded * sizeof(float));
+  if(Inst->buffer == NULL) {
+    printf("Malloc Inst->buffer failed\n");
+  }
   Inst->mel_energies = (float *)malloc(NUM_FBANK_BINS * sizeof(float));
+   if(Inst->mel_energies == NULL) {
+    printf("Malloc Inst->mel_energies failed\n");
+  } 
 
   //create window function
   Inst->window_func = (float *)malloc(FRAME_LEN * sizeof(float));
@@ -70,6 +82,9 @@ MFCC_Inst * create_MFCC()
  // arm_rfft_init_q15(Inst->rfft, Inst->frame_len_padded, 0, 1);
 
   Inst->rfft = (arm_rfft_fast_instance_f32 *)malloc(sizeof(arm_rfft_fast_instance_f32));
+  if(Inst->rfft == NULL) {
+    printf("Malloc Inst->rfft failed\n");
+  }
   arm_rfft_fast_init_f32(Inst->rfft, Inst->frame_len_padded);
  return Inst;
 }
@@ -91,6 +106,9 @@ void destory_MFCC(MFCC_Inst *handle) {
 float * create_dct_matrix(int32_t input_length, int32_t coefficient_count) {
   int32_t k, n;
   float *M = (float*)malloc(input_length*coefficient_count * sizeof(float));
+  if(M== NULL){
+    printf("MFCC DCT failed\n");
+  }
   float normalizer;
   arm_sqrt_f32(2.0/input_length,&normalizer);
   for (k = 0; k < coefficient_count; k++) {
@@ -176,11 +194,6 @@ void mfcc_compute(const int16_t * data, uint16_t dec_bits, int8_t * mfcc_out, MF
   //arm_rfft_q15(handle->rfft, handle->frame, handle->buffer);
   //Compute FFT
  arm_rfft_fast_f32(handle->rfft, handle->frame, handle->buffer, 0);
-
-  for(int i=0; i<1024; i=i+64) {
-    printf("frame[%d]=%f,buffer[%d]=%f\n\r",i, handle->frame[i], i, handle->buffer[i]);
-  }
-
 
   //Convert to power spectrum
   //buffer is stored as [real0, realN/2-1, real1, im1, real2, im2, ...]

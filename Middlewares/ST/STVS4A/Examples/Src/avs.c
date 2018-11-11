@@ -270,6 +270,7 @@ void services_Init(void)
 
   AVS_Show_Config(hInstance);
   AVS_TRACE_INFO("\r************ Start ***************\r");
+//  hInstance->pAudio->hKwsState =0x01;
 }
 
 

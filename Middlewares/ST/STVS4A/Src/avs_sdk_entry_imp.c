@@ -431,12 +431,12 @@ AVS_Handle AVS_Create_Instance(AVS_Instance_Factory *pFactory)
     vPortFree(pHandle);
     return AVS_ERROR;
   }
-
-  result  = avs_kws_task_create(pHandle);
+  result  = avs_kws_task_create(pAHandle);
+  printf("assert kws ok\n");
   AVS_ASSERT((result == AVS_OK));
   if(result != AVS_OK)
   {
-    vPortFree(pHandle);
+    AVS_TRACE_ERROR("Error : Create audio kws!");
     return AVS_ERROR;
   }
   pHandle->bInstanceStarted = 1;
@@ -466,6 +466,7 @@ AVS_Result AVS_Delete_Instance(AVS_Handle hHandle)
   AVS_VERIFY(avs_state_delete(pHandle));
   AVS_VERIFY(avs_token_refresh_delete(pHandle));
   AVS_VERIFY(avs_audio_delete(pHandle->pAudio));
+  AVS_VERIFY(avs_kws_task_delete(pHandle->pAudio));
   AVS_VERIFY(avs_core_queue_delete(&pHandle->hPostMsg));
 
   if(pHandle->pLastToken)

@@ -69,4 +69,4 @@ typedef struct NN_Inst_ {
 NN_Inst* create_nn(q7_t* scratch_pad);
 void run_nn(q7_t* in_data, q7_t* out_data, NN_Inst* handle);
 
-#endif
+#endif/*dnn*/
