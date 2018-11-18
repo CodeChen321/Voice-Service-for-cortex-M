@@ -725,6 +725,7 @@ static void avs_state_task(const void *pCookie)
         /* It is a good occasion to process some not realtime action */
 
         /* Sleep a bit */
+        pHandle->pAudio->hKwsState = 1;
         avs_core_task_delay(DELAY_SLEEP);
 
         avs_state_posts(pHandle);

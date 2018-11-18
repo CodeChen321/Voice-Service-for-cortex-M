@@ -69,7 +69,7 @@ void run_nn(q7_t* in_data, q7_t* out_data, NN_Inst* handle)
 	// Run all layers
 
 	// IP1
-	arm_fully_connected_q7(in_data, ip1_wt, IN_DIM, IP1_OUT_DIM, 1, 7, ip1_bias, handle->ip1_out, handle->vec_buffer);
+	arm_fully_connected_q7(in_data, ip1_wt, IN_DIM, IP1_OUT_DIM, 2, 7, ip1_bias, handle->ip1_out, handle->vec_buffer);
 
     /*for (int i=0; i< 144; i=i+8) {
     	printf("ip1_out[%d]:%d\n\r", i,handle->ip1_out[i]);
@@ -88,7 +88,7 @@ void run_nn(q7_t* in_data, q7_t* out_data, NN_Inst* handle)
 	arm_relu_q7(handle->ip2_out, IP2_OUT_DIM);
 
 	// IP3
-	arm_fully_connected_q7(handle->ip2_out, ip3_wt, IP2_OUT_DIM, IP3_OUT_DIM, 2, 9, ip3_bias, handle->ip3_out, handle->vec_buffer);
+	arm_fully_connected_q7(handle->ip2_out, ip3_wt, IP2_OUT_DIM, IP3_OUT_DIM, 3, 9, ip3_bias, handle->ip3_out, handle->vec_buffer);
 
    /* for (int i=0; i< 144; i=i+8) {
     	printf("ip3_out[%d]:%d\n\r", i,handle->ip3_out[i]);

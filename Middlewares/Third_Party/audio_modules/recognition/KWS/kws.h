@@ -36,6 +36,8 @@ typedef struct _kws_inst {
     q7_t predictions[MAX_SLIDING_WINDOW][OUT_DIM];
     int read_pos;
     int write_pos;
+    int count;
+    int last_maxid;
 }kws_inst;
 
 kws_inst *kws_init(void);

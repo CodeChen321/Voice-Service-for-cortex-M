@@ -61,8 +61,7 @@ void average_predictions(int window_len, q7_t (*predictions)[OUT_DIM], q7_t *out
     averaged_output[j] = (q7_t)(sum/window_len);
   }
 }
-
-char output_class[12][8] = {"Silence", "Unknow", "yes", "no", "down", "left", "right", "on", "off", "stop", "go"};
+static char output_class[12][8] = {"Silence", "Unknow",  "alexa", "olivia", "sheila", "zero", "five", "backward", "yes", "right", "on", "happy"};
 
 kws_inst *kws_init(void) 
 {
@@ -77,47 +76,60 @@ kws_inst *kws_init(void)
   memset(handle->audio_buffer, 0, 640*2*sizeof(int16_t));
   memset(handle->mfcc_buffer, 0, MFCC_BUFFER_SIZE * sizeof(q7_t));
   handle->mfcc_buffer_head = 0;
-  handle->read_pos  = 0;
-  handle->write_pos = 0;
+  handle->read_pos  =  0;
+  handle->write_pos =  0;
+  handle->count =      0;
+  handle->last_maxid = 0;
   return handle;
 }
 
 int kws_process(kws_inst *handle)
 {
-  int num_frames = 0;
-  int max_ind  = 0;
-  int averaging_window_len = 3;
-  int detection_threshold = 0;
+  int num_frames = 0, max_ind= 0, averaging_window_len= 3, old_maxid = 0, old_count = 0;
+  int threshold = 40;
   q7_t output[OUT_DIM];
   q7_t averaged_output[OUT_DIM];
  // memcpy(handle->audio_buffer + handle->write_pos, audio_buff, 16000);
  // handle->write_pos = 16000;
   
-  
   num_frames = (handle->write_pos - handle->read_pos) / (FRAME_SHIFT);
-  for(unsigned int f=0; f<num_frames; ++f) {
-    memmove(handle->mfcc_buffer, handle->mfcc_buffer + (num_frames * NUM_MFCC_COEFFS), (NUM_FRAMES-num_frames) * NUM_MFCC_COEFFS);
-    int32_t mfcc_buffer_head = (NUM_FRAMES - num_frames) * NUM_MFCC_COEFFS;
-    for(uint16_t f=0; f < num_frames; ++f) {
-      mfcc_compute(handle->audio_buffer + f*FRAME_LEN, 2, handle->mfcc_buffer + mfcc_buffer_head, handle->mfcc_inst);
-      mfcc_buffer_head += NUM_MFCC_COEFFS;
-    }
-    run_nn(handle->mfcc_buffer, output, handle->dnn_inst);
-    arm_softmax_q7(output, OUT_DIM, output);
+  memmove(handle->mfcc_buffer, handle->mfcc_buffer + (num_frames * NUM_MFCC_COEFFS), (NUM_FRAMES-num_frames) * NUM_MFCC_COEFFS);
+  int32_t mfcc_buffer_head = (NUM_FRAMES - num_frames) * NUM_MFCC_COEFFS;
+  for(uint16_t f=0; f < num_frames; ++f) {
+    mfcc_compute(handle->audio_buffer + f*FRAME_LEN, 2, handle->mfcc_buffer + mfcc_buffer_head, handle->mfcc_inst);
+    mfcc_buffer_head += NUM_MFCC_COEFFS;
+  }
+  run_nn(handle->mfcc_buffer, output, handle->dnn_inst);
+  arm_softmax_q7(output, OUT_DIM, output);
+  max_ind = get_top_detection(output);
+  printf("D-- %s (%d%%)\n\r", output_class[max_ind], ((int)output[max_ind]));
     
-    average_predictions(averaging_window_len, handle->predictions, output, averaged_output);
-    max_ind = get_top_detection(averaged_output);
+  average_predictions(averaging_window_len, handle->predictions, output, averaged_output);
+  max_ind = get_top_detection(averaged_output);
+  //if(averaged_output[max_ind] > detection_threshold *128/100) {
+   printf("D %s (%d%%)\n\r", output_class[max_ind], ((int)averaged_output[max_ind]));
+    //}  
+    
+  if(handle->last_maxid == max_ind) {
+    if(averaged_output[max_ind] > threshold){
+      handle->count++;
+    }
+  } else {
+    handle->last_maxid = max_ind;
+    handle->count       = 0;
+  }
     //if(averaged_output[max_ind] > detection_threshold *128/100) {
     //  printf("Detected %s (%d%%), (%d%%)\n", output_class[max_ind], ((int)averaged_output[max_ind]*100),
     //         ((int)output[max_ind]*100/128));
     //}  
-  }
   handle->write_pos -= FRAME_SHIFT * num_frames;
 
-  if(max_ind == 2)
-      return 1;
-  else 
+  if(handle->count >= 3 && max_ind == 3){
+    handle->count = 0;
+    return 1;
+  }else{
       return 0;
+  }
 }
 
 void kws_reset(kws_inst *handle)

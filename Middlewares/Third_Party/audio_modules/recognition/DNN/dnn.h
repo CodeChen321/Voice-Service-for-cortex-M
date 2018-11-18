@@ -19,7 +19,7 @@
 #ifndef KWS_DNN_H
 #define KWS_DNN_H
 
-#include "weights_v2_80.h"
+#include "weights.h"
 #include "Include/arm_nnfunctions.h"
 #include "arm_math.h"
 #include "../MFCC/mfcc.h"

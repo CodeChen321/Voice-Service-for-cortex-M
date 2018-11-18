@@ -53,6 +53,7 @@ static void avs_kws_task(const void *argument)
     }
 
     if(kws_flag) {
+      pAHandle->hKwsState = 0;
       afe_voice_trigger_found( 0);
     }
   }
