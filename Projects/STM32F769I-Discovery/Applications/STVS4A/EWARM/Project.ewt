@@ -6566,7 +6566,7 @@
                                     <name>$PROJ_DIR$\..\..\..\..\..\MIDDLEWARES\ST\STVS4A\Src\Porting\STM32F7XX\Bsp\avs_porting_bsp_F7.c</name>
                                 </file>
                                 <file>
-                                    <name>$PROJ_DIR$\..\..\..\..\..\MIDDLEWARES\ST\STVS4A\Src\Porting\STM32F7XX\Bsp\avs_porting_bsp_F7.h</name>
+                                    <name>$PROJ_DIR$\..\..\..\..\..\Middlewares\ST\STVS4A\Src\Porting\stm32F7xx\Bsp\avs_porting_bsp_F7.h</name>
                                 </file>
                                 <file>
                                     <name>$PROJ_DIR$\..\..\..\..\..\Middlewares\ST\STVS4A\Src\Porting\stm32F7xx\Bsp\avs_porting_bsp_F7_audio.c</name>
@@ -6579,7 +6579,7 @@
                                 </file>
                             </group>
                             <file>
-                                <name>$PROJ_DIR$\..\..\..\..\..\MIDDLEWARES\ST\STVS4A\Src\Porting\STM32F7XX\avs_board_f7.h</name>
+                                <name>$PROJ_DIR$\..\..\..\..\..\Middlewares\ST\STVS4A\Src\Porting\stm32F7xx\avs_board_f7.h</name>
                             </file>
                         </group>
                         <file>
@@ -6593,13 +6593,13 @@
                         <name>$PROJ_DIR$\..\..\..\..\..\MIDDLEWARES\ST\STVS4A\Src\avs_audio_imp.c</name>
                     </file>
                     <file>
-                        <name>$PROJ_DIR$\..\..\..\..\..\Middlewares\ST\STVS4A\Src\avs_core_imp.c</name>
+                        <name>$PROJ_DIR$\..\..\..\..\..\MIDDLEWARES\ST\STVS4A\Src\avs_core_imp.c</name>
                     </file>
                     <file>
                         <name>$PROJ_DIR$\..\..\..\..\..\Middlewares\ST\STVS4A\Src\avs_directive_imp.c</name>
                     </file>
                     <file>
-                        <name>$PROJ_DIR$\..\..\..\..\..\Middlewares\ST\STVS4A\Src\avs_http2_imp.c</name>
+                        <name>$PROJ_DIR$\..\..\..\..\..\MIDDLEWARES\ST\STVS4A\Src\avs_http2_imp.c</name>
                     </file>
                     <file>
                         <name>$PROJ_DIR$\..\..\..\..\..\Middlewares\ST\STVS4A\Src\avs_json_formater_imp.c</name>
@@ -6757,13 +6757,13 @@
                             </file>
                         </group>
                         <file>
-                            <name>$PROJ_DIR$\..\..\..\..\..\Middlewares\Third_Party\audio_modules\recognition\DNN\dnn.c</name>
+                            <name>$PROJ_DIR$\..\..\..\..\..\MIDDLEWARES\THIRD_PARTY\AUDIO_MODULES\RECOGNITION\DNN\dnn.c</name>
                         </file>
                         <file>
                             <name>$PROJ_DIR$\..\..\..\..\..\Middlewares\Third_Party\audio_modules\recognition\DNN\dnn.h</name>
                         </file>
                         <file>
-                            <name>$PROJ_DIR$\..\..\..\..\..\Middlewares\Third_Party\audio_modules\recognition\DNN\dnn_weights.h</name>
+                            <name>$PROJ_DIR$\..\..\..\..\..\MIDDLEWARES\THIRD_PARTY\AUDIO_MODULES\RECOGNITION\DNN\dnn_weights.h</name>
                         </file>
                         <file>
                             <name>$PROJ_DIR$\..\..\..\..\..\Middlewares\Third_Party\audio_modules\recognition\DNN\weights_v1_80.h</name>
@@ -6778,7 +6778,7 @@
                             <name>$PROJ_DIR$\..\..\..\..\..\MIDDLEWARES\THIRD_PARTY\AUDIO_MODULES\RECOGNITION\KWS\kws.c</name>
                         </file>
                         <file>
-                            <name>$PROJ_DIR$\..\..\..\..\..\MIDDLEWARES\THIRD_PARTY\AUDIO_MODULES\RECOGNITION\KWS\kws.h</name>
+                            <name>$PROJ_DIR$\..\..\..\..\..\Middlewares\Third_Party\audio_modules\recognition\KWS\kws.h</name>
                         </file>
                     </group>
                     <group>
@@ -6787,10 +6787,46 @@
                             <name>$PROJ_DIR$\..\..\..\..\..\MIDDLEWARES\THIRD_PARTY\AUDIO_MODULES\RECOGNITION\MFCC\mfcc.c</name>
                         </file>
                         <file>
-                            <name>$PROJ_DIR$\..\..\..\..\..\MIDDLEWARES\THIRD_PARTY\AUDIO_MODULES\RECOGNITION\MFCC\mfcc.h</name>
+                            <name>$PROJ_DIR$\..\..\..\..\..\Middlewares\Third_Party\audio_modules\recognition\MFCC\mfcc.h</name>
                         </file>
                     </group>
                 </group>
+            </group>
+            <group>
+                <name>fatfs_disk</name>
+                <file>
+                    <name>$PROJ_DIR$\..\..\..\..\..\Middlewares\Third_Party\fatfs_disk\disk_mmc.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\..\..\..\..\Middlewares\Third_Party\fatfs_disk\disk_mmc.h</name>
+                </file>
+            </group>
+            <group>
+                <name>ff13b</name>
+                <file>
+                    <name>$PROJ_DIR$\..\..\..\..\..\Middlewares\Third_Party\ff13b\source\diskio.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\..\..\..\..\Middlewares\Third_Party\ff13b\source\diskio.h</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\..\..\..\..\Middlewares\Third_Party\ff13b\source\ff.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\..\..\..\..\Middlewares\Third_Party\ff13b\source\ff.h</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\..\..\..\..\Middlewares\Third_Party\ff13b\source\ffconf.h</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\..\..\..\..\Middlewares\Third_Party\ff13b\source\ffsystem.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\..\..\..\..\Middlewares\Third_Party\ff13b\source\ffunicode.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\..\..\..\..\Middlewares\Third_Party\ff13b\source\integer.h</name>
+                </file>
             </group>
             <group>
                 <name>FreeRTOS</name>
@@ -6800,7 +6836,7 @@
                         <name>$PROJ_DIR$\..\..\..\..\..\Middlewares\Third_Party\FreeRTOS\Source\portable\MemMang\heap_3.c</name>
                     </file>
                     <file>
-                        <name>$PROJ_DIR$\..\..\..\..\..\Middlewares\Third_Party\FreeRTOS\Source\portable\IAR\ARM_CM7\r0p1\port.c</name>
+                        <name>$PROJ_DIR$\..\..\..\..\..\MIDDLEWARES\THIRD_PARTY\FreeRTOS\Source\portable\IAR\ARM_CM7\r0p1\port.c</name>
                     </file>
                     <file>
                         <name>$PROJ_DIR$\..\..\..\..\..\Middlewares\Third_Party\FreeRTOS\Source\portable\IAR\ARM_CM7\r0p1\portasm.s</name>
@@ -7261,6 +7297,21 @@
                 </file>
                 <file>
                     <name>$PROJ_DIR$\..\..\..\..\..\Middlewares\Third_Party\mbedTLS\library\xtea.c</name>
+                </file>
+            </group>
+            <group>
+                <name>wav</name>
+                <file>
+                    <name>$PROJ_DIR$\..\..\..\..\..\Middlewares\Third_Party\wav\util.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\..\..\..\..\MIDDLEWARES\THIRD_PARTY\wav\util.h</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\..\..\..\..\MIDDLEWARES\THIRD_PARTY\wav\wav_util.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\..\..\..\..\MIDDLEWARES\THIRD_PARTY\wav\wav_util.h</name>
                 </file>
             </group>
         </group>
